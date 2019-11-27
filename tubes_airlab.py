@@ -6,7 +6,7 @@ from IPython.display import display
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from vpython import *
+import visuals as vs
 
 from IPython import get_ipython
 ipy = get_ipython()
@@ -40,7 +40,7 @@ print("Percentage of wines with quality 7 and above: {:.2f}%".format(greater_per
 
 display(np.round(data.describe()))
 
-#vs.distribution(data, "quality") masih error (skewed distribution)
+vs.distribution(data, "quality")
 
 pd.plotting.scatter_matrix(data, alpha = 0.3, figsize = (40,40), diagonal = 'kde');
 
@@ -61,18 +61,18 @@ g = sns.JointGrid(x="fixed acidity", y="citric acid", data=fixedAcidity_citricAc
 g = g.plot_joint(sns.regplot, scatter_kws={"s": 10})
 g = g.plot_marginals(sns.distplot)
 
-#Volatile Acidity vs Quality (Masih Error)
+#Quality vs Volatile Acidity
 fig, axs = plt.subplots(ncols=1,figsize=(10,6))
-sns.barplot(x='quality', y='volatile acidity', data=volatileAcidity_quality, ax=axs)
+sns.barplot(x='quality', y='volatile acidity', data=data, ax=axs)
 plt.title('quality VS volatile acidity')
 
 plt.tight_layout()
 plt.show()
 plt.gcf().clear()
 
-#Alcohol vs Quality (Masih Error)
+#Quality vs Alcohol
 fig, axs = plt.subplots(ncols=1,figsize=(10,6))
-sns.barplot(x='quality', y='alcohol', data=quality_alcohol, ax=axs)
+sns.barplot(x='quality', y='alcohol', data=data, ax=axs)
 plt.title('quality VS alcohol')
 
 plt.tight_layout()
@@ -84,6 +84,7 @@ for feature in data.keys():
     Q1 = np.percentile(data[feature], q=25)
     Q3 = np.percentile(data[feature], q=75)
     interquartile_range = Q3 - Q1
+    step = 1.5 * interquartile_range
     print("Data points considered outliers for the feature '{}':".format(feature))
     display(data[~((data[feature] >= Q1 - step) & (data[feature] <= Q3 + step))])
     outliers = []
