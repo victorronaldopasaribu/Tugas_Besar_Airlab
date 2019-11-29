@@ -79,7 +79,7 @@ plt.tight_layout()
 plt.show()
 plt.gcf().clear()
 
-#detect outliers (masih error)
+#detect outliers
 for feature in data.keys():
     Q1 = np.percentile(data[feature], q=25)
     Q3 = np.percentile(data[feature], q=75)
@@ -89,4 +89,3 @@ for feature in data.keys():
     display(data[~((data[feature] >= Q1 - step) & (data[feature] <= Q3 + step))])
     outliers = []
     good_data = data.drop(data.index[outliers]).reset_index(drop = True)
-    
